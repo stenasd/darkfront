@@ -1,0 +1,18 @@
+{
+    "creatListing": {
+        "creatListing1": "creatListing1",
+        "listingTitlePlaceholder": "listingTitlePlaceholder",
+        "listingDiscPlaceholder": "listingDiscPlaceholder",
+        "listingPDisc": "listingPDisc",
+        "listingH1titel": "listingH1titel",
+        "listingSubmitButton": "listingSubmitButton",
+        "pHelpTextListing": "pHelpTextListing",
+        "pHelpTextProduct": "pHelpTextProduct",
+        "productTextPlaceHolder": "productTextPlaceHolder",
+        "productPricePlaceHolder": "productPricePlaceHolder",
+        "productRemoveButton": "productRemoveButton",
+        "productSubmitButton": "productSubmitButton",
+        "productH1titel": "productH1titel",
+        "productPDisc": "productPDisc"
+    }
+}

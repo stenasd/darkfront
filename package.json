@@ -16,9 +16,17 @@
     "react-dom": "17.0.1",
     "react-hook-form": "^6.15.4",
     "react-redux": "^7.2.2",
+    "react-virtualized": "^9.22.3",
+    "semantic-ui-react": "^2.0.3",
     "socket.io-client": "^3.1.0",
+    "styled-components": "^5.2.1",
     "use-global-hook": "^0.2.1",
     "use-immer": "^0.4.2",
     "use-socket.io-client": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.13.7",
+    "@babel/preset-env": "^7.13.5",
+    "@babel/runtime": "^7.13.7"
   }
 }

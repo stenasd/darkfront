@@ -37,5 +37,4 @@ export default function PersonList() {
             </form>
         </div>
     )
-
 }

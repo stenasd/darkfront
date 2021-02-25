@@ -14,3 +14,8 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.photo {
+  height: 200px;
+  width: 200px;
+}
