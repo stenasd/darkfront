@@ -11,6 +11,7 @@ function main() {
         axios.get('/api/activeRooms', { withCredentials: true })
             .then(res => {
                 let index = 0
+                console.log(res.data);
                 res.data.forEach(data => {
 
                     index++

@@ -1,38 +1,63 @@
-import { Column, Table } from 'react-virtualized';
-import React from 'react';
-import styled from 'styled-components'
-export default function app() {
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import { useImmer } from 'use-immer';
+import Link from 'next/link'
+function main() {
+    let key = 0
+    const [roominfo, setRoominfo] = useImmer([]);
+    useEffect(() => {
 
-    const list = [
-        {name: 'Brian Vaughn', description: 'Software engineer'}, {name: 'Brian Vaughn', description: 'Software engineer'}, {name: 'Brian Vaughn', description: 'Software engineer'}, {name: 'Brian Vaughn', description: 'Software engineer'}, {name: 'Brian Vaughn', description: 'Software engineer'}, {name: 'Brian Vaughn', description: 'Software engineer'}, {name: 'Brian Vaughn', description: 'Software engineer'},
-        // And so on...
-      ];
+
+        axios.get('/api/allListings', { withCredentials: true })
+            .then(res => {
+                let index = 0
+                console.log(res.data)
+                res.data.forEach(data => {
+
+                    index++
+
+                    let returnobject = data
+                    console.log(returnobject);
+                    setRoominfo(draft => {
+                        console.log(key)
+                        draft.push(
+                            <Card key={index} object={returnobject}
+                            />)
+                        key++;
+
+                    })
+
+                })
+            })
+            .catch((error) => {
+                console.log("getmoveerror")
+            });
+
+    }, []);
     return (
-        <Table
-            width={300}
-            height={300}
-            headerHeight={100}
-            rowHeight={100}
-            rowCount={list.length}
-            rowGetter={({ index }) => list[index]}>
-            <Column label="Name" dataKey="name" width={500} />
-            <Column width={500} label="Description" dataKey="description" />
-        </Table>
-    );
-    function rowRenderer({
-        key, // Unique key within array of rows
-        index, // Index of row within collection
-    }) {
-        return (
-            <div key={key}>
-                <h1>
-                    {list[index]}
-                </h1>
-                <img src="https://i.pinimg.com/originals/1a/57/49/1a57497e26218d7b134d7cd25468bb52.jpg" alt="Logo" />
-            </div>
-        );
-    }
+        <div className={"grid-container"}>
 
+            {roominfo}
+        </div>
+    );
 }
 
+function Card(prop) {
+    let url = "/chat/" + prop.object.id
+    console.log(prop)
+    return (<div className={"grid-item"}>
+
+        <Link href={url}>
+            <div>
+                <img src={prop.object.image} alt="image" />
+                <h4>{prop.object.name}{" "}{prop.object.priceBTC}</h4>
+            </div>
+        </Link>
+
+
+    </div>
+    )
+}
+
+export default main;
 
