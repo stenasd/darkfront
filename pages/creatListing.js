@@ -12,13 +12,18 @@ export default function App() {
     const [prodsData, setProdsData] = useImmer([]);
     const [count, setCount] = useState(0);
     async function onSubmitListing(data) {
-        const sendarray =prodsData.filter(n => n)
+        const sendarray = prodsData.filter(n => n)
         console.log(sendarray)
         console.log(data)
-        axios.post('/api/creatListing', {
-            creatProduct: sendarray,
-            creatListing: data
-        })
+        let fd = new FormData();
+        const config = { headers: { "Content-Type": "multipart/form-data" } };
+        fd.append('file', data.file[0])
+        //let imgres = await axios.post("/api/imagePost", fd, config);
+        console.log(data)
+        fd.append("creatProduct",JSON.stringify(sendarray))
+        fd.append("creatListing",JSON.stringify(data))
+        console.log(fd)
+        axios.post('/api/creatListing', fd,config)
             .then(function (response) {
                 console.log(response);
             })
@@ -66,7 +71,7 @@ function Prod(prodData) {
 
             <h3>
                 {prodData.text}
-                {prodData.index}
+                {prodData.price}
                 <button onClick={submit}>
                     remove
             </button>
@@ -85,7 +90,9 @@ function CreateListings(prodData) {
 
             <form onSubmit={handleSubmit(onSubmitListing)}>
                 <h1>{textData.listingH1titel}:</h1>
+                <input ref={register} type="file" name="file" />
                 <p>{textData.listingPDisc}</p>
+
                 <input type="text" placeholder={textData.listingTitlePlaceholder} name="titel" ref={register({ required: true, maxLength: 100 })} />
                 <input type="text" placeholder={textData.listingDiscPlaceholder} name="text" ref={register({ required: true, maxLength: 80 })} />
                 <button type="submit">{textData.listingSubmitButton}</button>

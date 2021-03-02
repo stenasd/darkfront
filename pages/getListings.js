@@ -43,19 +43,23 @@ function main() {
 }
 
 function Card(prop) {
-    let url = "/chat/" + prop.object.id
+    let url = "/listing/" + prop.object.id
     console.log(prop)
-    return (<div className={"grid-item"}>
+    return (
 
         <Link href={url}>
-            <div>
-                <img src={prop.object.image} alt="image" />
-                <h4>{prop.object.name}{" "}{prop.object.priceBTC}</h4>
+            <div className={"grid-item"}>
+
+                <img src={"/api/" + prop.object.image} alt="image" />
+
+                <h4 className={"grid-h4"}>{prop.object.name} {' '} {prop.object.priceBTC}{'btc'}</h4>
+               
+
             </div>
         </Link>
 
 
-    </div>
+
     )
 }
 
