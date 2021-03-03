@@ -14,5 +14,10 @@
         "productSubmitButton": "productSubmitButton",
         "productH1titel": "productH1titel",
         "productPDisc": "productPDisc"
+    },
+    "signup":{
+        "duplname":"duplName",
+        "duplnick":"duplNick",
+        "regist":"signdUp"
     }
 }

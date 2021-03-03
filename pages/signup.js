@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import textData1 from '../texterSvenska.json'
 export default function PersonList() {
     const [name, setName] = useState("");
     const [pass, setPass] = useState("");
     const [pass2, setPass2] = useState("");
     const [nick, setNick] = useState("");
     const [refer, setRefer] = useState("");
-
+    const [error, setError] = useState(""); 
 
     const onSetName = event => {
         setName(event.target.value);
@@ -25,17 +26,33 @@ export default function PersonList() {
     };
     function submit() {
         let signupobj = {
-            name:name,
-            pass:pass,
-            nick:nick,
-            refer:refer
+            name: name,
+            pass: pass,
+            nick: nick,
+            refer: refer
         }
-        axios.post(`/api/signup`, { signupobj })
-        .then(res => {
-          console.log(res.data);
-        })
-    
-      }
+        axios.post(`/api/signup`, { signupobj }, { withCredentials: true })
+            .then(res => {
+                console.log(res.data);
+                if(res.data.duplname){
+                    setError(textData1.signup.duplname)
+                }
+                if(res.data.duplnick){
+                    setError(textData1.signup.duplnick)
+                }
+                if(res.data.succ){
+                    setError(textData1.signup.regist)
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+
+            });
+
+    }
+    if(error==textData1.signup.regist){
+        return(<p>{textData1.signup.regist}</p>)
+    }
 
     return (
         <div>
@@ -49,6 +66,9 @@ export default function PersonList() {
                     send
                 </button>
             </p>
+            <h4>
+                {error}
+            </h4>
         </div>
     )
 }

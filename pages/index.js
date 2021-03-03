@@ -42,6 +42,8 @@ export default function PersonList() {
           <input type="submit" value="Submit" />
         </div>
       </form>
+
+      <a href="/signup">signup</a>
     </div>
   )
 

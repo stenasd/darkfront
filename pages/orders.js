@@ -6,30 +6,26 @@ function main() {
     let key = 0
     const [roominfo, setRoominfo] = useImmer([]);
     useEffect(() => {
-
-
         axios.get('/api/activeRooms', { withCredentials: true })
             .then(res => {
                 let index = 0
-                console.log(res.data);
-                res.data.forEach(data => {
+                let data = res.data
+                console.log(res)
+                data.forEach(data => {
 
                     index++
-
                     let returnobject = {
-                        orderQuant: data.orderQuant,
                         orderID: data.orderID,
-                        productname: data.productName,
                         seller: data.seller,
+                        buyer: data.buyer,
                         key: index,
-                        chatmessages: data.messages
+                        title: data.title
                     }
-                    console.log(returnobject);
                     setRoominfo(draft => {
-                        console.log(key)
                         draft.push(
                             <Chatpage key={index} object={returnobject}
-                            />)
+                            />
+                        )
                         key++;
 
                     })
@@ -39,8 +35,40 @@ function main() {
             .catch((error) => {
                 console.log("getmoveerror")
             });
-
-    }, []);
+    }
+        , []);
+        useEffect(() => {
+            axios.get('/api/activeRoomsSeller', { withCredentials: true })
+                .then(res => {
+                    let index = 0
+                    let data = res.data
+                    console.log(res)
+                    data.forEach(data => {
+    
+                        index++
+                        let returnobject = {
+                            orderID: data.orderID,
+                            seller: data.seller,
+                            buyer: data.buyer,
+                            key: index,
+                            title: data.title
+                        }
+                        setRoominfo(draft => {
+                            draft.push(
+                                <Chatpage key={index} object={returnobject}
+                                />
+                            )
+                            key++;
+    
+                        })
+    
+                    })
+                })
+                .catch((error) => {
+                    console.log("getmoveerror")
+                });
+        }
+            , []);
     return (
         <div>
             <ul>
@@ -53,10 +81,12 @@ function Chatpage(prop) {
     let url = "/chat/" + prop.object.orderID
     return (<div>
         <Link href={url}>
-            <h1>{prop.object.productname}</h1>
+            <div>
+                <h4>{"seller:" + prop.object.seller + " buyer:" + prop.object.buyer}</h4>
+                <p>{"order:" + prop.object.title}</p>
+            </div>
         </Link>
-        <ul>
-        </ul>
+
     </div>
     )
 }

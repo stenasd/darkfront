@@ -2,8 +2,11 @@ html,
 body {
   padding: 0;
   margin: 0;
+  margin-top: 2%;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif
+    
+    
 }
 
 a {
@@ -20,6 +23,7 @@ a {
   width: 200px;
 }
 .grid-container {
+  margin-top: 5%;
   display: grid;
   background-color: #fff;
   color: #444;
@@ -37,4 +41,27 @@ a {
   
   display:inline-block;;
   vertical-align: top;
+}
+.fixed-header{
+  top: 0;
+}
+.fixed-header, .fixed-footer{
+  width: 100%;
+  position: fixed;        
+  background: #333;
+  padding: 10px 0;
+  color: #fff;
+}
+.login{
+  float: right;
+}
+.container{
+  width: 80%;
+  margin: 0 auto; /* Center the DIV horizontally */
+}
+nav a{
+  color: #fff;
+  text-decoration: none;
+  padding: 7px 25px;
+  display: inline-block;
 }
