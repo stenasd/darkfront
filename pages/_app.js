@@ -13,7 +13,7 @@ function Header() {
     <div className={"fixed-header"}>
       <div className={"container"}>
         <nav>
-          <a href="./">Home</a>
+          <a href="/">Home</a>
           <a href="/getListings">Annonser</a>
           <a href="/orders">Ordrar</a>
           <a href="/creatListing">Skapa Annons</a>

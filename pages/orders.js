@@ -5,12 +5,13 @@ import Link from 'next/link'
 function main() {
     let key = 0
     const [roominfo, setRoominfo] = useImmer([]);
+    const [roominfoS, setRoominfoS] = useImmer([]);
     useEffect(() => {
         axios.get('/api/activeRooms', { withCredentials: true })
             .then(res => {
                 let index = 0
                 let data = res.data
-                console.log(res)
+                console.log(data)
                 data.forEach(data => {
 
                     index++
@@ -37,42 +38,46 @@ function main() {
             });
     }
         , []);
-        useEffect(() => {
-            axios.get('/api/activeRoomsSeller', { withCredentials: true })
-                .then(res => {
-                    let index = 0
-                    let data = res.data
-                    console.log(res)
-                    data.forEach(data => {
-    
-                        index++
-                        let returnobject = {
-                            orderID: data.orderID,
-                            seller: data.seller,
-                            buyer: data.buyer,
-                            key: index,
-                            title: data.title
-                        }
-                        setRoominfo(draft => {
-                            draft.push(
-                                <Chatpage key={index} object={returnobject}
-                                />
-                            )
-                            key++;
-    
-                        })
-    
+    useEffect(() => {
+        axios.get('/api/activeRoomsSeller', { withCredentials: true })
+            .then(res => {
+                let index = 0
+                let data = res.data
+                console.log(data)
+                data.forEach(data => {
+
+                    index++
+                    let returnobject = {
+                        orderID: data.orderID,
+                        seller: data.seller,
+                        buyer: data.buyer,
+                        key: index,
+                        title: data.title
+                    }
+                    setRoominfoS(draft => {
+                        draft.push(
+                            <Chatpage key={index} object={returnobject}
+                            />
+                        )
+                        key++;
+
                     })
+
                 })
-                .catch((error) => {
-                    console.log("getmoveerror")
-                });
-        }
-            , []);
+            })
+            .catch((error) => {
+                console.log("getmoveerror")
+            });
+    }
+        , []);
     return (
         <div>
             <ul>
+                <h1> Köpare: </h1>
                 {roominfo}
+
+                <h1>Säljare:</h1>
+                {roominfoS}
             </ul>
         </div>
     );

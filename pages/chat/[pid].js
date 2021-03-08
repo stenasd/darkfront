@@ -12,7 +12,11 @@ function main() {
     useEffect(() => {
 
         if (!router.isReady) return;
-        axios.get('/api/activeRooms', { withCredentials: true })
+        axios.get('/api/getChat', {
+            withCredentials: true, params: {
+                listingID: pid
+            }
+        })
             .then(res => {
                 let index = 0
                 res.data.forEach(data => {
@@ -97,7 +101,7 @@ function Chatpage(prop) {
         setText(event.target.value);
     };
     function submit() {
-       
+
         let sendobject = {
             text: text,
             orderid: prop.object.orderID,
