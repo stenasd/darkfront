@@ -49,14 +49,19 @@ function Card(prop) {
 
         <Link href={url}>
             <div className={"grid-item"}>
+                <div className={"grid-image"}>
 
                 <img src={"/api/" + prop.object.image} alt="image" />
 
-                <h4 className={"grid-h4"}>{prop.object.name} {' '} {prop.object.priceBTC}{'btc'}</h4>
-               
+                </div>
+                <div className={"grid-h4"}>
+                    <h4 className={"grid-h4"}>{prop.object.name}</h4></div>
+                <div className={"grid-price"}>
+                    <h4 className={"grid-price"}>{prop.object.priceBTC}{'btc'}</h4>
+                </div>
 
             </div>
-        </Link>
+        </Link >
 
 
 

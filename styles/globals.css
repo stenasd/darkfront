@@ -18,30 +18,8 @@ a {
   box-sizing: border-box;
 }
 
-.photo {
-  height: 200px;
-  width: 200px;
-}
-.grid-container {
-  margin-top: 5%;
-  display: grid;
-  background-color: #fff;
-  color: #444;
-  
-}
-.grid-h4{
-  display:inline-block;;
-  vertical-align: top;
-}
-.grid-thumb{
-  
-  display:block;margin-right:5%;
-}
-.grid-price{
-  
-  display:inline-block;;
-  vertical-align: top;
-}
+
+
 .fixed-header{
   top: 0;
 }
@@ -55,13 +33,54 @@ a {
 .login{
   float: right;
 }
-.container{
-  width: 80%;
-  margin: 0 auto; /* Center the DIV horizontally */
-}
+
 nav a{
   color: #fff;
   text-decoration: none;
   padding: 7px 25px;
   display: inline-block;
+}
+
+
+
+.photo {
+  height: 200px;
+  width: 200px;
+}
+.grid-container {
+  margin-top: 5%;
+  margin-right: 10%;
+  margin-left: 10%;
+  display: grid;
+  
+  color: #444;
+  grid-gap:  0.2em;
+  
+}
+
+.grid-item{
+  justify-content: stretch; 
+  background-color: rgb(201, 201, 201);
+  margin: 5px;
+  display: grid;
+  grid-template-columns: 4, 20%;
+  grid-template-rows: 4, 20%;
+}
+.grid-image{
+  grid-row:    1 / 4;
+  grid-column: 1 / 4;
+}
+.grid-h4{
+  grid-row:    1 ;
+  grid-column: 2 ;
+}
+.grid-price{
+
+  grid-row:    2 ;
+  grid-column: 2 ;
+}
+img{
+    width: 300px;
+    height: 300px;
+  
 }

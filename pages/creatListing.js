@@ -11,6 +11,7 @@ export default function App() {
     const [prods, setProds] = useImmer([]);
     const [prodsData, setProdsData] = useImmer([]);
     const [count, setCount] = useState(0);
+    const [confirmed,setConfirmed] = useState(false);
     async function onSubmitListing(data) {
         const sendarray = prodsData.filter(n => n)
         console.log(sendarray)
@@ -26,8 +27,12 @@ export default function App() {
         axios.post('/api/creatListing', fd,config)
             .then(function (response) {
                 console.log(response);
+                if(response.status==200){
+                    setConfirmed(true)
+                }
             })
             .catch(function (error) {
+               
                 console.log(error);
             });
     }
@@ -50,6 +55,11 @@ export default function App() {
         setProdsData(draft => {
             draft.splice(param, 1, null)
         })
+    }
+    if(confirmed){
+        return(
+            <h4>{"listing created"}</h4>
+        )
     }
     return (
         <div>

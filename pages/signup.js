@@ -1,47 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from 'axios';
+import { useForm } from "react-hook-form";
 import textData1 from '../texterSvenska.json'
-export default function PersonList() {
-    const [name, setName] = useState("");
-    const [pass, setPass] = useState("");
-    const [pass2, setPass2] = useState("");
-    const [nick, setNick] = useState("");
-    const [refer, setRefer] = useState("");
-    const [error, setError] = useState(""); 
 
-    const onSetName = event => {
-        setName(event.target.value);
+export default function App() {
+    const { register, errors, handleSubmit } = useForm({
+        mode: "onChange"
+    });
+    const onSubmit = data => {
+        submit(data)
     };
-    const onSetPass = event => {
-        setPass(event.target.value);
-    };
-    const onSetPass2 = event => {
-        setPass2(event.target.value);
-    };
-    const onSetNick = event => {
-        setNick(event.target.value);
-    };
-    const onSetRefer = event => {
-        setRefer(event.target.value);
-    };
-    function submit() {
-        let signupobj = {
-            name: name,
-            pass: pass,
-            nick: nick,
-            refer: refer
-        }
-        axios.post(`/api/signup`, { signupobj }, { withCredentials: true })
+    function submit(data) {
+        axios.post(`/api/signup`, { data }, { withCredentials: true })
             .then(res => {
                 console.log(res.data);
-                if(res.data.duplname){
-                    setError(textData1.signup.duplname)
+                if (res.data.duplname) {
+
+                    alert(textData1.signup.duplname);
                 }
-                if(res.data.duplnick){
-                    setError(textData1.signup.duplnick)
+                if (res.data.duplnick) {
+
+                    alert(textData1.signup.duplnick);
                 }
-                if(res.data.succ){
-                    setError(textData1.signup.regist)
+                if (res.data.succ) {
+                    alert(textData1.signup.regist)
                 }
             })
             .catch(function (error) {
@@ -50,25 +32,62 @@ export default function PersonList() {
             });
 
     }
-    if(error==textData1.signup.regist){
-        return(<p>{textData1.signup.regist}</p>)
-    }
-
     return (
-        <div>
-            <p>
-                Name: <input type="text" value={name} onChange={onSetName} />
-                Pass:<input type="password" value={pass} onChange={onSetPass} />
-                Pass2:<input type="password" value={pass2} onChange={onSetPass2} />
-                Referal Code:<input type="text" value={refer} onChange={onSetRefer} />
-                Nickname:<input type="text" value={nick} onChange={onSetNick} />
-                <button onClick={submit}>
-                    send
-                </button>
-            </p>
-            <h4>
-                {error}
-            </h4>
+
+        <div className="formContainer">
+            <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={"form"}>
+                    <label htmlFor="name">Username </label>
+                    <input
+                        name="name"
+                        placeholder="name"
+                        ref={register({ required: true })}
+                    />
+                    {errors.name && <p>This is required </p>}
+                </div>
+
+                <div className={"form"}>
+                    <label htmlFor="nick">nick</label>
+                    <input
+                        name="nick"
+                        placeholder="nick"
+                        ref={register({ required: true })}
+                    />
+                    {errors.nick && <p>This is required</p>}
+                </div>
+
+                 <div className={"form"}>
+                    <label htmlFor="pass">password 1</label>
+                    <input
+                        type="password"
+                        name="pass"
+                        placeholder="pass"
+                        ref={register({ required: true })}
+                    />
+                    {errors.pass && <p>This is required</p>}
+                </div>
+                <div className={"form"}>
+                    <label htmlFor="pass2">password 2</label>
+                    <input
+                        type="password"
+                        name="pass2"
+                        placeholder="pass2"
+                        ref={register({ required: true })}
+                    />
+                    {errors.password2 && <p>This is required</p>}
+                </div>
+                <div className={"form"}>
+                    <label htmlFor="refer">refer</label>
+                    <input
+                        name="refer"
+                        placeholder="refer"
+                        ref={register({ required: true })}
+                    />
+                    {errors.refer && <p>This is required</p>}
+                </div>
+
+                <input type="submit" />
+            </form>
         </div>
-    )
+    );
 }
