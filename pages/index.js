@@ -10,19 +10,24 @@ export default function PersonList() {
       .then(res => {
         console.log("authenticated")
         setLoggedIn(res.data.authenticated);
+        getRecentAdress();
+      
       })
       .catch((error) => {
         console.log("notauthenticated")
         setLoggedIn(false)
       });
+
+
+
   }, []);
 
   if (loggedIn) {
 
     return (
       <div>
-        <form action="/api/logout" method="post">     
-            <input type="submit" value="logout" />         
+        <form action="/api/logout" method="post">
+          <input type="submit" value="logout" />
         </form>
       </div>
     )
@@ -47,4 +52,24 @@ export default function PersonList() {
     </div>
   )
 
+}
+function getNewAdress(){
+  axios.post('/api/creatAdress')
+          .then(function (response) {
+            console.log(response.data)
+            return response.data.adrr
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+}
+function getRecentAdress(){
+  axios.get('/api/getCurrentAdress')
+          .then(function (response) {
+            console.log(response.data.adrr)
+            return response.data.adrr
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
 }

@@ -36,7 +36,6 @@ function main() {
     }, []);
     return (
         <div className={"grid-container"}>
-
             {roominfo}
         </div>
     );

@@ -18,6 +18,7 @@ function main() {
             }
         })
             .then(res => {
+                console.log(res.data[0].messages)
                 let index = 0
                 res.data.forEach(data => {
 
@@ -70,10 +71,17 @@ function Chatpage(prop) {
 
     let key = 0
     useEffect(() => {
+        //sends sessionid and join socket
+
+        let sendobject = {
+            text: "",
+            orderid: prop.object.orderID,
+        }
         axios.get('/api/getSessionid', { withCredentials: true })
             .then(res => {
                 console.log(res.data.sessionID)
                 setSessionid(res.data.sessionID);
+                socket.emit("auth", [res.data.sessionID, sendobject])
             })
         socket.on("msg", data => {
             console.log(data)
