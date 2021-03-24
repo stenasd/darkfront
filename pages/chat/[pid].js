@@ -3,6 +3,7 @@ import socketIOClient from "socket.io-client";
 import axios from 'axios';
 import { useImmer } from 'use-immer';
 import { useRouter } from 'next/router'
+import { useForm } from "react-hook-form";
 const ENDPOINT = "http://127.0.0.1:8081";
 function main() {
     let key = 0
@@ -32,7 +33,9 @@ function main() {
                         productname: data.productName,
                         seller: data.seller,
                         key: index,
-                        chatmessages: data.messages
+                        chatmessages: data.messages,
+                        isSeller: data.isSeller,
+                        orderstate: data.orderstate
                     }
                     console.log(returnobject);
                     setRoominfo(draft => {
@@ -68,11 +71,10 @@ function Chatpage(prop) {
     const [messages1, setMessages] = useImmer([]);
     const [sessionid, setSessionid] = useState();
     const [text, setText] = useState(" ");
-
+    const [orderstate, setOrderstate] = useState(0);
+    const [seller, setSeller] = useState(0);
     let key = 0
     useEffect(() => {
-        //sends sessionid and join socket
-
         let sendobject = {
             text: "",
             orderid: prop.object.orderID,
@@ -81,18 +83,20 @@ function Chatpage(prop) {
             .then(res => {
                 console.log(res.data.sessionID)
                 setSessionid(res.data.sessionID);
+                console.log(prop)
+                setSeller(prop.object.isSeller)
+                setOrderstate(prop.object.orderstate)
                 socket.emit("auth", [res.data.sessionID, sendobject])
             })
         socket.on("msg", data => {
-            console.log(data)
+
             key++
             setMessages(draft => {
                 draft.push(<Chatmsg key={key} text={data.text} orderid={data.orderid} name={data.name} />)
             })
         });
-        console.log(prop.object)
+
         prop.object.chatmessages.forEach(data => {
-            console.log(data)
             setMessages(draft => {
                 console.log(key)
                 key++
@@ -109,7 +113,6 @@ function Chatpage(prop) {
         setText(event.target.value);
     };
     function submit() {
-
         let sendobject = {
             text: text,
             orderid: prop.object.orderID,
@@ -117,18 +120,20 @@ function Chatpage(prop) {
         socket.emit("chat message", [sessionid, sendobject])
         console.log(prop)
         setText(" ")
-
     }
-    return (<div>
-        <h1>{prop.object.productname}</h1>
-        <ul>
-            {messages1}
-        </ul>
-        <button onClick={submit}>
-            send
+    
+    return (
+        <div>
+            {seller ? <MarkAsSent orderstate={orderstate}orderid={prop.object.orderID}/> : <CompleteOrder orderstate={orderstate}orderid={prop.object.orderID}/>}
+            <h1>{prop.object.productname}</h1>
+            <ul>
+                {messages1}
+            </ul>
+            <button onClick={submit}>
+                send
       </button>
-        <input type="text" value={text} onChange={onChangeHandler} />
-    </div>
+            <input type="text" value={text} onChange={onChangeHandler} />
+        </div>
     )
 }
 
@@ -142,6 +147,113 @@ function Chatmsg(prop) {
         </div>
     )
 }
+function MarkAsSent(prop) {
+    const { register, errors, handleSubmit } = useForm({
+        mode: "onChange"
+    });
+
+    const onSubmit = data => {
+        submit()
+    };
+
+    function submit() {
+        axios.post(`/api/orderSent`, { orderid: prop.orderid }, { withCredentials: true })
+            .then(res => {
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
+  
+        if (prop.orderstate == 0) {
+            return (
+                <div className="formContainer">
+                    <h4>Markera att varan är skickad {prop.orderid}</h4>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <input type="submit" value="submit" />
+                    </form>
+                </div>
+            );
+        }
+        else if (prop.orderstate==1) {
+            return (
+                <div className="formContainer">
+                    <h4> Varan skickad väntar på att köpare konfirmerar </h4>
+                </div>
+            );
+        }
+        else if (prop.orderstate==2) {
+            return (
+                <div className="formContainer">
+                    <h4> Escrow klar </h4>
+                </div>
+            );
+        }
+
+  
+
+}
+
+function CompleteOrder(prop) {
+
+    const { register, errors, handleSubmit } = useForm({
+        mode: "onChange"
+    });
+    const onSubmit = data => {
+        console.log(data);
+        if (data.rating <6 && data.rating >0) {
+            submit(data)
+        }
+        else {
+            alert("1-5");
+        }
+    };
+    function submit(data) {
+        let sendjson = {orderid:prop.orderid,rating:data.rating}
+        axios.post(`/api/addreview`, sendjson, { withCredentials: true })
+            .then(res => {
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
+    if (prop.orderstate == 0) {
+        return (
+            <div className="formContainer">
+                <h4> Väntar på säljare </h4>
+            </div>
+        );
+
+    }
+    if (prop.orderstate==2) {
+        return (
+            <div className="formContainer">
+                <h4> Escrow klar </h4>
+            </div>
+        );
+        
+    }
+    return (
+        <div className="formContainer">
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={"form"}>
+                    <label htmlFor="rating">1-5</label>
+                    <input
+                        name="rating"
+                        placeholder="1-5"
+                        ref={register({ required: true })}
+                    />
+                    {errors.rating && <p>This is required</p>}
+                </div>
+                <input type="submit" value="submit" />
+            </form>
+        </div>
+    );
+}
+
+
+
+
 
 
 export default main;

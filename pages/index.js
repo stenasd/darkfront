@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-
-export default function PersonList() {
-
+export default function PersonList(){
   const [loggedIn, setLoggedIn] = useState(false);
-
   useEffect(() => {
     axios.get('/api/checkAuthentication', { withCredentials: true })
       .then(res => {
@@ -17,13 +14,8 @@ export default function PersonList() {
         console.log("notauthenticated")
         setLoggedIn(false)
       });
-
-
-
   }, []);
-
-  if (loggedIn) {
-
+  if (loggedIn) {  
     return (
       <div>
         <form action="/api/logout" method="post">
@@ -47,21 +39,9 @@ export default function PersonList() {
           <input type="submit" value="Submit" />
         </div>
       </form>
-
       <a href="/signup">signup</a>
     </div>
   )
-
-}
-function getNewAdress(){
-  axios.post('/api/creatAdress')
-          .then(function (response) {
-            console.log(response.data)
-            return response.data.adrr
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
 }
 function getRecentAdress(){
   axios.get('/api/getCurrentAdress')
@@ -73,3 +53,4 @@ function getRecentAdress(){
             console.log(error);
           });
 }
+

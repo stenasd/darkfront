@@ -40,7 +40,7 @@ export default function App() {
                     <label htmlFor="name">Username </label>
                     <input
                         name="name"
-                        placeholder="name"
+          F              placeholder="name"
                         ref={register({ required: true })}
                     />
                     {errors.name && <p>This is required </p>}
