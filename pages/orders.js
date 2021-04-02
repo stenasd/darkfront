@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useImmer } from 'use-immer';
 import Link from 'next/link'
+import textData1 from '../texterSvenska.json'
+let textData = textData1.orders
+
+
 function main() {
     let key = 0
     const [roominfo, setRoominfo] = useImmer([]);
@@ -13,7 +17,6 @@ function main() {
                 let data = res.data
                 console.log(data)
                 data.forEach(data => {
-
                     index++
                     let returnobject = {
                         orderID: data.orderID,
@@ -30,7 +33,6 @@ function main() {
                         key++;
 
                     })
-
                 })
             })
             .catch((error) => {
@@ -71,12 +73,12 @@ function main() {
     }
         , []);
     return (
-        <div>
+        <div className="formContainer">
             <ul>
-                <h1> Köpare: </h1>
+                <h1> {textData.buyer}: </h1>
                 {roominfo}
 
-                <h1>Säljare:</h1>
+                <h1>{textData.seller}</h1>
                 {roominfoS}
             </ul>
         </div>
@@ -84,11 +86,12 @@ function main() {
 }
 function Chatpage(prop) {
     let url = "/chat/" + prop.object.orderID
+    console.log(prop)
     return (<div>
         <Link href={url}>
-            <div>
-                <h4>{"seller:" + prop.object.seller + " buyer:" + prop.object.buyer}</h4>
-                <p>{"order:" + prop.object.title}</p>
+            <div className={"grid-item-order"}>
+                <h4>{textData.seller+": " + prop.object.seller + " "+ textData.buyer+": " + prop.object.buyer}</h4>
+                <p>{textData.order+": " + prop.object.title}</p>
             </div>
         </Link>
 

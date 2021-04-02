@@ -1,81 +1,174 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  margin-top: 3%;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif
+    padding: 0;
+    margin: 0;
+    margin-top: 3vh;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.fixed-header {
+    top: 0;
+}
+
+.fixed-header,
+.fixed-footer {
+    width: 100%;
+    height: 6vh;
+    position: fixed;
+    background: #333;
+    padding: 10px 0;
+    color: #fff;
+}
+
+.login {
+    float: right;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+
+    @media (min-width: 600px){
+        padding: 20px;
+    }
+    display: inline-block;
 }
 
 
-
-.fixed-header{
-  top: 0;
-}
-.fixed-header, .fixed-footer{
-  width: 100%;
-  position: fixed;        
-  background: #333;
-  padding: 10px 0;
-  color: #fff;
-}
-.login{
-  float: right;
-}
-
-nav a{
-  color: #fff;
-  text-decoration: none;
-  padding: 4px 25px;
-  display: inline-block;
-}
-.photo {
-  height: 200px;
-  width: 200px;
-}
 .grid-container {
-  margin-top: 5%;
-  margin-right: 10%;
-  margin-left: 10%;
-  display: grid;
-  
-  color: #444;
-  grid-gap:  0.2em;
-  
+    margin-right: 10%;
+    margin-left: 10%;
+    display: grid;
+    color: #444;
+    grid-gap: 0.2em;
 }
 
-.grid-item{
-  justify-content: stretch; 
-  background-color: rgb(201, 201, 201);
-  margin: 5px;
-  display: grid;
-  grid-template-columns: 4, 20%;
-  grid-template-rows: 4, 20%;
+.grid-item {
+    background-color: rgb(201, 201, 201);
+    display: grid;
 }
-.grid-image{
-  grid-row:    1 / 4;
-  grid-column: 1 / 4;
-}
-.grid-h4{
-  grid-row:    1 ;
-  grid-column: 2 ;
-}
-.grid-price{
 
-  grid-row:    2 ;
-  grid-column: 2 ;
+.grid-image {
+    width: 20vh;
+    height: 100%;
+    grid-row: 1 / 4;
+    grid-column: 1 / 2;
 }
-img{
-    width: 300px;
-    height: 300px;
-  
+
+.grid-name {
+    width: 20vh;
+    height: 100%;
+    justify-self: stretch;
+    grid-row: 1;
+    grid-column: 3;
 }
+
+.grid-price {
+    width: 20vh;
+    height: 100%;
+    justify-self: center;
+    grid-row: 1;
+    grid-column: 4;
+}
+
+img {
+    width: 20vh;
+    height: 20vh;
+}
+
+.searchbarcontainer {
+    justify-self: center;
+}
+.formContainer{
+    margin-right: 30%;
+    margin-left: 30%;
+    display: grid;
+    color: #444;
+    grid-gap: 0.2em;
+    justify-items:center
+}
+.grid-item-form{
+    margin-bottom: 15px;
+    display: grid;
+}
+.grid-item-order{
+    border: 0.1em solid #000000;
+    margin-bottom: 15px;
+    padding: 2em;
+    display: grid;
+}
+.grid-item-form-button{
+    margin-bottom: 15px;
+    justify-items:center
+}
+
+
+.button1:hover {
+    color: #ffffff;
+    background-color: #000000;
+}
+
+.button1 {
+    width: 100%;
+    height: 4vh;
+    display: inline-block;
+    padding: 0.35em 1.2em;
+    border: 0.1em solid #000000;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.12em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #000000;
+    text-align: center;
+    transition: all 0.2s;
+}
+.button2 {
+    
+    height: 4vh;
+    display: inline-block;
+    padding: 0.35em 1.2em;
+    border: 0.1em solid #000000;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.12em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #000000;
+    text-align: center;
+    transition: all 0.2s;
+}
+.button2:hover {
+    color: #ffffff;
+    background-color: #000000;
+}
+.warningText{
+    padding: 5px;
+    background-color: #f44336; /* Red */
+    justify-items:center;
+    color: white;
+}
+.chatContainer{
+    justify-items:center
+}
+.chatMenu{
+    width: 100%;
+}
+nav ul{height :80vh; width: 50vw}
+nav ul{
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;}
+

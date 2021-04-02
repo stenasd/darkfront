@@ -1,6 +1,8 @@
 import '../styles/globals.css'
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import textData1 from '../texterSvenska.json'
+let textData = textData1.navBar
 function MyApp({ Component, pageProps }) {
   return (
     <div>
@@ -43,13 +45,12 @@ function Header() {
       <div className={"fixed-header"}>
         <div className={"container"}>
           <nav>
-            <a href="/">Home</a>
-            <a href="/getListings">Annonser</a>
-            <a href="/orders">Ordrar</a>
-            <a href="/creatListing">Skapa Annons</a>
-            <a className={"login"} href="/api/logout">logout</a>
-            <a className={"login"} href="/wallet">wallet</a>
-            <a className={"login"} href="/wallet">{currentAdress + "-btc"}</a>
+            <a href="/">{textData.home}</a>
+            <a href="/getListings">{textData.getListings}</a>
+            <a href="/orders">{textData.orders}</a>
+            <a href="/creatListing">{textData.creatListing}</a>
+            <a className={"login"} href="/api/logout">{textData.logout}</a>
+            <a className={"login"} href="/">{currentAdress + "-btc"}</a>
           </nav>
         </div>
       </div>
@@ -59,12 +60,12 @@ function Header() {
     <div className={"fixed-header"}>
       <div className={"container"}>
         <nav>
-          <a href="/">Home</a>
-          <a href="/getListings">Annonser</a>
-          <a href="/orders">Ordrar</a>
-          <a href="/creatListing">Skapa Annons</a>
-          <a className={"login"} href="/">login</a>
-          <a className={"login"} href="/wallet">wallet</a>
+        <a href="/">{textData.home}</a>
+            <a href="/getListings">{textData.getListings}</a>
+            <a href="/orders">{textData.orders}</a>
+            <a href="/creatListing">{textData.creatListing}</a>
+          <a className={"login"} href="/">{textData.login}</a>
+          <a className={"login"} href="/wallet">{textData.wallet}</a>
           <a className={"login"} href="/wallet">{currentAdress + "-btc"}</a>
 
         </nav>

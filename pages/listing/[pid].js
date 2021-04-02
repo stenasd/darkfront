@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useImmer } from 'use-immer';
 import { useRouter } from 'next/router'
+import textData1 from '../../texterSvenska.json'
+let textData = textData1.listing
 const ENDPOINT = "http://127.0.0.1:8081";
 function Main() {
     const router = useRouter()
@@ -33,6 +35,7 @@ function Main() {
             }
         })
             .then(res => {
+                console.log(res)
                 setText(res.data)
                 let key = 0
                 res.data.products.forEach(element => {
@@ -53,14 +56,17 @@ function Main() {
             });
     }, [router.isReady]);
     return (
-        <div>
+
+        <div className="formContainer">
+            <img src={"/api/" + text.image} alt="image" />
             <h1>{text.titel}</h1>
             <h1>{text.text}</h1>
-            <ul>
+            <h4>
+                {textData.productHeader}
+            </h4>
                 {products}
-            </ul>
-            <button onClick={submit}>
-                buy
+            <button onClick={submit} className={"button2"}>
+            {textData.buy}
             </button>
 
 
@@ -82,13 +88,12 @@ function Prod(prodData) {
         <div className="card">
 
             <h3>
-                {"titel:"}{prodData.object.name}
-                {'     '}
-                {"price:"}{prodData.object.price}
+                {textData.produktTitel}{prodData.object.name}
             </h3>
-                Quant: <input type="number" value={quant} onChange={onSetName} />
-
-
+            <h3>
+            {textData.produktPrice}{prodData.object.price}
+            </h3>
+            {textData.quant} <input type="number" value={quant} onChange={onSetName} />
         </div>
     )
 }

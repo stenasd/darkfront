@@ -18,6 +18,54 @@
     "signup":{
         "duplname":"duplName",
         "duplnick":"duplNick",
-        "regist":"signdUp"
+        "regist":"signdUp",
+        "wentWrong":"wentWrong"
     }
+    ,"listing":{
+        "productHeader":"produktHeader",
+        "produktTitel":"produktTitel ",
+        "produktPrice":"produktPrice ",
+        "quant":"Quant1",
+        "buy":"buy"
+    }
+    ,"home":{
+        "name":"name",
+        "rating":"rating",
+        "ratingNr":"ratingNr",
+        "Username":"Username",
+        "Password":"Password",
+        "login":"login",
+        "signup":"signup",
+        "generateAdress":"generateAdress"
+    }
+    ,"orders":{
+        "order":"order",
+        "seller":"seller",
+        "buyer":"buyer"
+    }
+    ,"chat":{
+        "submit":"submit",
+        "thisRequired":"thisRequired",
+        "rating":"rating",
+        "escrowDone":"escrowDone",
+        "waitingForSeller":"waitingForSeller",
+        "waitingForBuyer":"waitingForBuyer",
+        "message":"message",
+        "send":"send"
+
+    },
+    "getListings":{
+        "noUser":"noUser",
+        "noMatch":"noMatch",
+        "search":"search"
+    },
+    "navBar":{
+        "home":"home",
+        "getListings":"getListings",
+        "orders":"orders",
+        "createListing":"creatListing",
+        "logout":"logout",
+        "login":"login"
+    }
+
 }

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import textData1 from '../texterSvenska.json'
 
 export default function App() {
+    const [WarningText, setWarningText] = useState(false);
     const { register, errors, handleSubmit } = useForm({
         mode: "onChange"
     });
@@ -15,15 +16,16 @@ export default function App() {
             .then(res => {
                 console.log(res.data);
                 if (res.data.duplname) {
-
-                    alert(textData1.signup.duplname);
+                    setWarningText(textData1.signup.duplname);
                 }
-                if (res.data.duplnick) {
-
-                    alert(textData1.signup.duplnick);
+                else if (res.data.duplnick) {
+                    setWarningText(textData1.signup.duplnick);
                 }
-                if (res.data.succ) {
-                    alert(textData1.signup.regist)
+                else if (res.data.succ) {
+                    setWarningText(textData1.signup.regist)
+                }
+                else if (!res.data.succ) {
+                    setWarningText(textData1.signup.wentWrong)
                 }
             })
             .catch(function (error) {
@@ -32,21 +34,32 @@ export default function App() {
             });
 
     }
+    if (WarningText == textData1.signup.regist) {
+        return (
+            <div className="formContainer">
+                <div className={"grid-item-form"}>
+                    <h1>{textData1.signup.regist}</h1>
+                </div>
+            </div>
+        )
+
+
+    }
     return (
 
         <div className="formContainer">
             <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={"form"}>
+                <div className={"grid-item-form"}>
                     <label htmlFor="name">Username </label>
                     <input
                         name="name"
-          F              placeholder="name"
+                        placeholder="name"
                         ref={register({ required: true })}
                     />
                     {errors.name && <p>This is required </p>}
                 </div>
 
-                <div className={"form"}>
+                <div className={"grid-item-form"}>
                     <label htmlFor="nick">nick</label>
                     <input
                         name="nick"
@@ -56,7 +69,7 @@ export default function App() {
                     {errors.nick && <p>This is required</p>}
                 </div>
 
-                 <div className={"form"}>
+                <div className={"grid-item-form"}>
                     <label htmlFor="pass">password 1</label>
                     <input
                         type="password"
@@ -66,7 +79,7 @@ export default function App() {
                     />
                     {errors.pass && <p>This is required</p>}
                 </div>
-                <div className={"form"}>
+                <div className={"grid-item-form"}>
                     <label htmlFor="pass2">password 2</label>
                     <input
                         type="password"
@@ -76,7 +89,7 @@ export default function App() {
                     />
                     {errors.password2 && <p>This is required</p>}
                 </div>
-                <div className={"form"}>
+                <div className={"grid-item-form"}>
                     <label htmlFor="refer">refer</label>
                     <input
                         name="refer"
@@ -85,8 +98,11 @@ export default function App() {
                     />
                     {errors.refer && <p>This is required</p>}
                 </div>
+                <div className={"grid-item-form"}>
+                    <input type="submit" value="signup" className={"button1"} />
+                    {WarningText ? <h4 className={"warningText"}>{WarningText}</h4> : false}
 
-                <input type="submit" />
+                </div>
             </form>
         </div>
     );

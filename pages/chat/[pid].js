@@ -4,7 +4,9 @@ import axios from 'axios';
 import { useImmer } from 'use-immer';
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
-const ENDPOINT = "http://127.0.0.1:8081";
+import textData1 from '../../texterSvenska.json'
+let textData = textData1.chat
+const ENDPOINT = "http://127.0.0.1:8081/";
 function main() {
     let key = 0
     const [roominfo, setRoominfo] = useImmer([]);
@@ -22,7 +24,6 @@ function main() {
                 console.log(res.data[0].messages)
                 let index = 0
                 res.data.forEach(data => {
-
                     index++
                     console.log(data.orderID)
                     console.log(pid)
@@ -58,7 +59,7 @@ function main() {
     }, [router.isReady]);
 
     return (
-        <div>
+        <div className="formContainer">
             <ul>
                 {roominfo}
             </ul>
@@ -70,9 +71,11 @@ function Chatpage(prop) {
     const socket = socketIOClient(ENDPOINT);
     const [messages1, setMessages] = useImmer([]);
     const [sessionid, setSessionid] = useState();
-    const [text, setText] = useState(" ");
     const [orderstate, setOrderstate] = useState(0);
     const [seller, setSeller] = useState(0);
+    const { register, handleSubmit, reset } = useForm({
+        mode: "onChange"
+    });
     let key = 0
     useEffect(() => {
         let sendobject = {
@@ -92,7 +95,7 @@ function Chatpage(prop) {
 
             key++
             setMessages(draft => {
-                draft.push(<Chatmsg key={key} text={data.text} orderid={data.orderid} name={data.name} />)
+                draft.unshift(<Chatmsg key={key} text={data.text} orderid={data.orderid} name={data.name} image={data.image} />)
             })
         });
 
@@ -100,52 +103,86 @@ function Chatpage(prop) {
             setMessages(draft => {
                 console.log(key)
                 key++
-                draft.push(<Chatmsg key={key}
+                draft.unshift(<Chatmsg key={key}
                     text={data.text}
                     orderid={data.orderid}
                     name={data.name}
+                    image={data.image}
                 />)
 
             })
         })
     }, []);
-    const onChangeHandler = event => {
-        setText(event.target.value);
-    };
-    function submit() {
-        let sendobject = {
-            text: text,
-            orderid: prop.object.orderID,
+
+
+
+    const onSubmit = async data => {
+        if (data.file[0]) {
+            let fd = new FormData();
+            const config = { headers: { "Content-Type": "multipart/form-data" } };
+            fd.append('file', data.file[0])
+            fd.append("orderid", prop.object.orderID)
+            fd.append("text", data.text)
+            console.log(fd)
+            axios.post('/api/chatImage', fd, config)
+                .then(function (response) {
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
-        socket.emit("chat message", [sessionid, sendobject])
-        console.log(prop)
-        setText(" ")
-    }
-    
+        else {
+            let sendobject = {
+                text: data.text,
+                orderid: prop.object.orderID,
+            }
+            socket.emit("chat message", [sessionid, sendobject])
+        }
+        reset()
+    };
     return (
-        <div>
-            {seller ? <MarkAsSent orderstate={orderstate}orderid={prop.object.orderID}/> : <CompleteOrder orderstate={orderstate}orderid={prop.object.orderID}/>}
-            <h1>{prop.object.productname}</h1>
-            <ul>
-                {messages1}
-            </ul>
-            <button onClick={submit}>
-                send
-      </button>
-            <input type="text" value={text} onChange={onChangeHandler} />
+        <div className="chatContainer">
+            <nav>
+                <ul>
+                    {messages1}
+                </ul>
+            </nav>
+            <div className="chatMenu">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <input
+                        className="chatMenu"
+                        name="text"
+                        placeholder={textData.message}
+                        ref={register()}
+                    />
+                    <input type="submit" value={textData.send} />
+                    <input ref={register} type="file" name="file" />
+                </form>
+            </div>
+            {seller ? <MarkAsSent orderstate={orderstate} orderid={prop.object.orderID} /> : <CompleteOrder orderstate={orderstate} orderid={prop.object.orderID} />}
+
         </div>
     )
 }
 
 
 function Chatmsg(prop) {
-    return (
-        <div className="card">
-            <p> {prop.name}: {prop.text}</p>
-
-
-        </div>
-    )
+    console.log(prop)
+    if (prop.image) {
+        return (
+            <div>
+                <img src={"/api/" + prop.image} alt="image" />
+                <p> {prop.name}: {prop.text}</p>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div>
+                <p> {prop.name}: {prop.text}</p>
+            </div>
+        )
+    }
 }
 function MarkAsSent(prop) {
     const { register, errors, handleSubmit } = useForm({
@@ -164,35 +201,34 @@ function MarkAsSent(prop) {
                 console.log(error)
             });
     }
-  
-        if (prop.orderstate == 0) {
-            return (
-                <div className="formContainer">
-                    <h4>Markera att varan är skickad {prop.orderid}</h4>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <input type="submit" value="submit" />
-                    </form>
-                </div>
-            );
-        }
-        else if (prop.orderstate==1) {
-            return (
-                <div className="formContainer">
-                    <h4> Varan skickad väntar på att köpare konfirmerar </h4>
-                </div>
-            );
-        }
-        else if (prop.orderstate==2) {
-            return (
-                <div className="formContainer">
-                    <h4> Escrow klar </h4>
-                </div>
-            );
-        }
 
-  
+    if (prop.orderstate == 0) {
+        return (
+            <div >
+                <h4>Markera att varan är skickad {prop.orderid}</h4>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <input type="submit" value={textData.submit} />
+                </form>
+            </div>
+        );
+    }
+    else if (prop.orderstate == 1) {
+        return (
+            <div>
+                <h4> {textData.waitingForBuyer} </h4>
+            </div>
+        );
+    }
+    else if (prop.orderstate == 2) {
+        return (
+            <div>
+                <h4> {textData.escrowDone} </h4>
+            </div>
+        );
+    }
 
 }
+
 
 function CompleteOrder(prop) {
 
@@ -201,7 +237,7 @@ function CompleteOrder(prop) {
     });
     const onSubmit = data => {
         console.log(data);
-        if (data.rating <6 && data.rating >0) {
+        if (data.rating < 6 && data.rating > 0) {
             submit(data)
         }
         else {
@@ -209,7 +245,7 @@ function CompleteOrder(prop) {
         }
     };
     function submit(data) {
-        let sendjson = {orderid:prop.orderid,rating:data.rating}
+        let sendjson = { orderid: prop.orderid, rating: data.rating }
         axios.post(`/api/addreview`, sendjson, { withCredentials: true })
             .then(res => {
             })
@@ -219,41 +255,35 @@ function CompleteOrder(prop) {
     }
     if (prop.orderstate == 0) {
         return (
-            <div className="formContainer">
-                <h4> Väntar på säljare </h4>
+            <div>
+                <h4> {textData.waitingForSeller} </h4>
             </div>
         );
 
     }
-    if (prop.orderstate==2) {
+    if (prop.orderstate == 2) {
         return (
-            <div className="formContainer">
-                <h4> Escrow klar </h4>
+            <div >
+                <h4> {textData.escrowDone} </h4>
             </div>
         );
-        
+
     }
     return (
-        <div className="formContainer">
+        <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={"form"}>
-                    <label htmlFor="rating">1-5</label>
+                    <label htmlFor={textData.rating}>1-5</label>
                     <input
                         name="rating"
                         placeholder="1-5"
                         ref={register({ required: true })}
                     />
-                    {errors.rating && <p>This is required</p>}
+                    {errors.rating && <p>{textData.thisRequired}</p>}
                 </div>
-                <input type="submit" value="submit" />
+                <input type="submit" value= {textData.submit} />
             </form>
         </div>
     );
 }
-
-
-
-
-
-
 export default main;
