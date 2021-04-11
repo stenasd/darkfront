@@ -48,7 +48,7 @@ function Header() {
             <a href="/">{textData.home}</a>
             <a href="/getListings">{textData.getListings}</a>
             <a href="/orders">{textData.orders}</a>
-            <a href="/creatListing">{textData.creatListing}</a>
+            <a href="/creatListing">{textData.createListing}</a>
             <a className={"login"} href="/api/logout">{textData.logout}</a>
             <a className={"login"} href="/">{currentAdress + "-btc"}</a>
           </nav>

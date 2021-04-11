@@ -113,9 +113,6 @@ function Chatpage(prop) {
             })
         })
     }, []);
-
-
-
     const onSubmit = async data => {
         if (data.file[0]) {
             let fd = new FormData();
@@ -188,11 +185,9 @@ function MarkAsSent(prop) {
     const { register, errors, handleSubmit } = useForm({
         mode: "onChange"
     });
-
     const onSubmit = data => {
         submit()
     };
-
     function submit() {
         axios.post(`/api/orderSent`, { orderid: prop.orderid }, { withCredentials: true })
             .then(res => {
@@ -226,9 +221,7 @@ function MarkAsSent(prop) {
             </div>
         );
     }
-
 }
-
 
 function CompleteOrder(prop) {
 
@@ -281,7 +274,7 @@ function CompleteOrder(prop) {
                     />
                     {errors.rating && <p>{textData.thisRequired}</p>}
                 </div>
-                <input type="submit" value= {textData.submit} />
+                <input type="submit" value={textData.submit} />
             </form>
         </div>
     );

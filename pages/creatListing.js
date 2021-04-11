@@ -37,8 +37,7 @@ export default function App() {
                 }
             })
             .catch(function (error) {
-
-                console.log(error);
+                console.log(error.response.data.error);
             });
     }
 
@@ -136,7 +135,7 @@ function CreateProducts(prodData) {
                 <p>{textData.productPDisc}</p>
                 <input type="text" placeholder={textData.productTextPlaceHolder} name="text" ref={register({ required: true, maxLength: 80 })} />
                 <br></br>
-                <input type="number" placeholder={textData.productPricePlaceHolder} name="price" ref={register({ required: true, maxLength: 100 })} />
+                <input type="number" step="0.000001" min="0" max="1000000"placeholder={textData.productPricePlaceHolder} name="price" ref={register({ required: true, maxLength: 100 })} />
                 <br></br>
                 <button type="submit" className={"button2"}>{textData.productSubmitButton}</button>
             </form>

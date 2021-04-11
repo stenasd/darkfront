@@ -4,7 +4,6 @@ import { useImmer } from 'use-immer';
 import { useRouter } from 'next/router'
 import textData1 from '../../texterSvenska.json'
 let textData = textData1.listing
-const ENDPOINT = "http://127.0.0.1:8081";
 function Main() {
     const router = useRouter()
     const { pid } = router.query
