@@ -133,7 +133,7 @@ function CreateProducts(prodData) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>{textData.productH1titel}:</h1>
                 <p>{textData.productPDisc}</p>
-                <input type="text" placeholder={textData.productTextPlaceHolder} name="text" ref={register({ required: true, maxLength: 80 })} />
+                <input type="text" placeholder={textData.productTextPlaceHolder} name="text" ref={register({ required: true, maxLength: 500 })} />
                 <br></br>
                 <input type="number" step="0.000001" min="0" max="1000000"placeholder={textData.productPricePlaceHolder} name="price" ref={register({ required: true, maxLength: 100 })} />
                 <br></br>

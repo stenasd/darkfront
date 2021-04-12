@@ -238,7 +238,8 @@ function CompleteOrder(prop) {
         }
     };
     function submit(data) {
-        let sendjson = { orderid: prop.orderid, rating: data.rating }
+        let sendjson = { orderid: prop.orderid, rating: data.rating, text: data.text }
+        console.log(sendjson)
         axios.post(`/api/addreview`, sendjson, { withCredentials: true })
             .then(res => {
             })
@@ -272,6 +273,7 @@ function CompleteOrder(prop) {
                         placeholder="1-5"
                         ref={register({ required: true })}
                     />
+                    <input type="text" placeholder={textData.reviewText} name="text" ref={register({ required: true, maxLength: 500 })} />
                     {errors.rating && <p>{textData.thisRequired}</p>}
                 </div>
                 <input type="submit" value={textData.submit} />
